@@ -165,34 +165,44 @@ df = pandas.read_csv()
 
 Quel est le type de l'objet `df`?
 ```
-
+C'est un dataframe pandas
+(pandas.core.frame.DataFrame)
 ```
 
 ##### Descriptions d'une table de données
 Que permettent les méthodes suivantes?
 ###### df.shape
 ```
+donne taille du tableau (dimensions)
 ```
 ###### df.head()
 ```
+donne les premières lignes du tab en html joli
 ```
 ###### df.tail()
 ```
+donne les dernières lignes du tab en html joli
 ```
 ###### df.columns
 ```
+donne les labels des colonnes
 ```
 ###### df.dtypes
 ```
+Return the dtypes (of each column) in the DataFrame.
 ```
 ###### df.info
 ```
+Print a concise summary of a DataFrame.
 ```
 ###### df.describe()
 ```
+Generate descriptive statistics.
 ```
 ###### df.dropna()
 ```
+Remove missing values.
+renvoie un dataframe sans les valeurs NA  (lignes avec au moins une NA sont dropped)
 ```
 
 ##### Accès aux éléments d'une table de données
@@ -203,6 +213,8 @@ values = df[['Description', 'Gene Symbol']]
 
 Quel est le type de `values` ?
 
+Un dataframe
+
 Verifiez si certaines méthodes de `DataFrame` lui sont applicables.
 Ce type supporte l'accès par indice et les slice `[a:b]`
 
@@ -212,17 +224,19 @@ On peut accéder aux valeurs du DataFrame via des indices ou plages d'indice. La
 Il y a différentes manières de le faire, l'utilisation de `.iloc[slice_ligne,slice_colonne]` constitue une des solutions les plus simples. N'oublions pas que shape permet d'obtenir les dimensions (lignes et colonnes) du DataFrame.
 ###### Acceder aux cinq premières lignes de toutes les colonnes
 ```python
+values = df.head(5)
+print(values)
 
 ```
 
 ###### Acceder à toutes les lignes de la dernière colonne
 ```python
-
+values = df.iloc[:,6]
 ```
 
 ###### Acceder aux cinq premières lignes des colonnes 0, 2 et 3
 ```python
-
+values = df.iloc[0:5,[0,2,3]]
 ```
 
 ##### Conversion de type
@@ -263,11 +277,23 @@ df.loc[ df['Gene Symbol'].isin(['fadR', 'arcA'] ) ]
 
 ##### 1. Charger le contenu du fichier `data/TCL_wt1.tsv` dans un notebook en eliminant les lignes porteuses de valeurs numériques aberrantes
 
+
+df2 = df.dropna()
+df2 = df2.astype({'Accession': str, 'Description': str, 'Gene Symbol': str, 
+                                                 'Corrected Abundance ratio (1.53)': np.float,  'Log2 Corrected Abundance Ratio': np.float, 
+                                                 'Abundance Ratio Adj. P-Value: (127. T3 Tc WT) / (126. T0 WT)': np.float, '-LOG10 Adj.P-val': np.float})
+values = df2.iloc[:,4]
+
+
 ##### 2. Representez par un histogramme les valeurs de `Log2 Corrected Abundance Ratio`
+fig, ax = plt.subplots()
+ax.hist(values)
+fig.show()
 
 ##### 3. A partir de cette échantillon de ratio d'abondance,  estimez la moyenne <img src="https://render.githubusercontent.com/render/math?math=\mu"> et l'ecart-type <img src="https://render.githubusercontent.com/render/math?math=\sigma"> d'une loi normale.
 ```
-
+print(np.mean(values))
+print(np.std(values))
 
 ```
 
